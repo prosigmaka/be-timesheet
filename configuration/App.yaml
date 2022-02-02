@@ -1,0 +1,12 @@
+App:
+  Port: 8081
+
+Database:
+  Host: "127.00.0.1"
+  Port: 5432
+  Username: "postgres"
+  Password: "yagami2909"
+  DBName: "timesheet-be"
+
+# Files:
+#   Path: "./files"
