@@ -1,47 +1,32 @@
 package db
 
 import (
+	"be-timesheet/pkg/entity"
+	"fmt"
 	"log"
-	"timesheet-app/pkg/models"
 
+	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
-	_ "gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func Init() *gorm.DB {
-	// username := viper.GetString("Database.Username")
-	// password := viper.GetString("Database.Password")
-	// host := viper.GetString("Database.Host")
-	// port := viper.GetInt("Database.Port")
-	// dbname := viper.GetString("Database.DBName")
+func InitDB() *gorm.DB {
+	username := viper.GetString("Database.Username")
+	password := viper.GetString("Database.Password")
+	host := viper.GetString("Database.Host")
+	port := viper.GetInt("Database.Port")
+	dbname := viper.GetString("Database.DBName")
 
-	// dsn := fmt.Sprintf(`host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/jakarta`, host, username, password, dbname, port)
+	dsn := fmt.Sprintf(`host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Jakarta`, host, username, password, dbname, port)
 
-	// db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-	// if err != nil {
-	// 	return nil, err
-	// }
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	// // if err := db.DB().Ping(); err != nil {
-	// // 	return nil, err
-	// // }
+	db.AutoMigrate(&entity.Timesheet{})
 
-	// return db, nil
-
-	dbURL := "postgres://postgres:farhan5497@localhost:5432/timesheet-be"
-
-    db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
-
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    db.AutoMigrate(&models.Project{})
-
-    return db
-
-
+	return db
 
 }

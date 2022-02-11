@@ -4,6 +4,10 @@ App:
 Database:
   Host: "127.00.0.1"
   Port: 5432
+  Environment:
   Username: "postgres"
-  Password: "farhan5497"
+  Password: "yagami2909"
   DBName: "timesheet-be"
+
+# Files:
+#   Path: "./files"
