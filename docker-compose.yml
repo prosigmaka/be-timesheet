@@ -1,0 +1,40 @@
+version: '7'
+services:
+  app:
+    container_name: timesheet-backend
+    build: .
+    ports: 
+      - 8081:8081
+    restart: on-failure
+    volumes:
+      - api:/usr/src/app/
+    depends_on:
+      - timesheet-postgres
+
+
+  fullstack-postgres:
+    image: postgres:latest
+    container_name: timesheet-postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}  
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - DATABASE_HOST=${HOST}
+    ports:
+      - '5332:5432'
+    volumes:
+      - database_postgres:/var/lib/postgresql/data
+    networks:
+      default:
+        ipv4_address: 172.21.0.2
+
+volumes:
+  api:
+  database_postgres:                  
+
+# Networks to be created to facilitate communication between containers
+# default network timesheet-network
+networks:
+  default :
+    external: true
+    name: timesheet-network
