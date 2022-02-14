@@ -39,15 +39,24 @@ func main() {
 	timesheetService := service.NewServiceTimesheet(timesheetRepository)
 	timesheetHandler := handler.NewTimesheetHandler(timesheetService)
 
+	statusRepository := repository.NewStatusRepository(DB)
+	statusService := service.NewServiceStatus(statusRepository)
+	statusHandler := handler.NewStatusHandler(statusService)
+
 	// router := mux.NewRouter()
 	router := gin.Default()
-	timesheet := router.Group("/v1")
+	timesheet := router.Group("/v1/timesheets")
 
-	timesheet.GET("/timesheets", timesheetHandler.GetAllTimesheets)
-	timesheet.GET("/timesheets/:id", timesheetHandler.GetTimesheetByID)
-	timesheet.POST("/timesheets", timesheetHandler.AddTimesheet)
-	timesheet.PUT("/timesheets/:id", timesheetHandler.UpdateTimesheet)
-	timesheet.DELETE("/timesheets/:id", timesheetHandler.DeleteTimesheet)
+	timesheet.GET("/", timesheetHandler.GetAllTimesheets)
+	timesheet.GET("/:id_timesheet", timesheetHandler.GetTimesheetByID)
+	timesheet.POST("/", timesheetHandler.AddTimesheet)
+	timesheet.PUT("/:id_timesheet", timesheetHandler.UpdateTimesheet)
+	timesheet.DELETE("/:id", timesheetHandler.DeleteTimesheet)
+
+	status := router.Group("/v1/status")
+
+	status.GET("/", statusHandler.GetAllStatus)
+	status.GET("/:id_status", statusHandler.GetStatusByID)
 
 	log.Println("API is running")
 	port := fmt.Sprintf(":%d", viper.GetInt("App.Port"))

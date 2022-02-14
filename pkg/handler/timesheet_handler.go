@@ -51,7 +51,7 @@ func (h *timesheetHandler) GetAllTimesheets(c *gin.Context) {
 }
 
 func (h *timesheetHandler) GetTimesheetByID(c *gin.Context) {
-	idStr := c.Param("id")
+	idStr := c.Param("id_timesheet")
 	id, _ := strconv.Atoi(idStr)
 	timesheet, err := h.timesheetService.GetTimesheetByID(id)
 
@@ -131,7 +131,7 @@ func (h *timesheetHandler) UpdateTimesheet(c *gin.Context) {
 		return
 	}
 
-	idStr := c.Param("id")
+	idStr := c.Param("id_timesheet")
 	id, _ := strconv.Atoi(idStr)
 
 	timesheet, err := h.timesheetService.UpdateTimesheet(id, timesheetInput)
