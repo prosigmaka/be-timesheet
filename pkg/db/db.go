@@ -25,7 +25,7 @@ func InitDB() *gorm.DB {
 		log.Fatalln(err)
 	}
 
-	db.AutoMigrate(&entity.Timesheet{}, &entity.Status{})
+	db.AutoMigrate(&entity.Timesheet{}, &entity.Status{}, &entity.User{})
 
 	return db
 
