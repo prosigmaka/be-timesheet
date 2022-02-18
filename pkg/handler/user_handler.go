@@ -3,7 +3,9 @@ package handler
 import (
 	"be-timesheet/pkg/entity"
 	"be-timesheet/pkg/jwttoken"
+	"be-timesheet/pkg/response"
 	"be-timesheet/pkg/service"
+	"errors"
 
 	// "fmt"
 	"net/http"
@@ -26,39 +28,29 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&registerUser)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	registerUserError := registerUser.Validate()
 	if len(registerUserError) > 0 {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": registerUserError,
-		})
+		response.ResponseCustomError(c, registerUserError, http.StatusBadRequest)
 		return
 	}
 
 	result, err := h.userService.AddUser(&registerUser)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": result,
-	})
+	response.ResponseCreated(c, result)
 }
 
 func (h *userHandler) GetAllUsers(c *gin.Context) {
 	result, err := h.userService.GetAllUsers()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -66,25 +58,19 @@ func (h *userHandler) GetAllUsers(c *gin.Context) {
 		result = &[]entity.UserResponse{}
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": result,
-	})
+	response.ResponseOKWithData(c, result)
 }
 
 func (h *userHandler) GetUserByID(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	result, err := h.userService.GetUserByID(userId)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -92,26 +78,20 @@ func (h *userHandler) GetUserByID(c *gin.Context) {
 		result = &entity.UserResponse{}
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": result,
-	})
+	response.ResponseOKWithData(c, result)
 }
 
 func (h *userHandler) UpdateUser(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, errors.New("invalid User ID").Error(), http.StatusBadRequest)
 		return
 	}
 
 	var updateUser entity.User
 	err = c.ShouldBindJSON(&updateUser)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -119,17 +99,13 @@ func (h *userHandler) UpdateUser(c *gin.Context) {
 
 	updateUserError := updateUser.Validate()
 	if len(updateUserError) > 0 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"errors": updateUserError,
-		})
+		response.ResponseCustomError(c, updateUserError, http.StatusBadRequest)
 		return
 	}
 
 	result, err := h.userService.UpdateUser(&updateUser)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -137,31 +113,23 @@ func (h *userHandler) UpdateUser(c *gin.Context) {
 		result = &entity.UserResponse{}
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": result,
-	})
+	response.ResponseOKWithData(c, result)
 }
 
 func (h *userHandler) DeleteUser(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, errors.New("invalid User ID").Error(), http.StatusBadRequest)
 		return
 	}
 
 	err = h.userService.DeleteUser(userId)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": "Succesfully Deleted User",
-	})
+	response.ResponseOK(c, "Succesfully Deleted User")
 }
 
 func (h *userHandler) Login(c *gin.Context) {
@@ -169,17 +137,13 @@ func (h *userHandler) Login(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&loginRequest)
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusUnprocessableEntity)
 		return
 	}
 
 	validateUser, err := h.userService.GetUserByEmailPassword(loginRequest)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -190,9 +154,7 @@ func (h *userHandler) Login(c *gin.Context) {
 	// Generate JWT
 	token, err := jwttoken.CreateToken(int64(validateUser.ID))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"errors": err,
-		})
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -202,7 +164,5 @@ func (h *userHandler) Login(c *gin.Context) {
 		"user_id":      validateUser.ID,
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": userData,
-	})
+	response.ResponseOKWithData(c, userData)
 }
