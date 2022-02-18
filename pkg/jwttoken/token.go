@@ -8,6 +8,8 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/spf13/viper"
+
+	"be-timesheet/pkg/entity"
 )
 
 type TokenDetail struct {
@@ -17,16 +19,20 @@ type TokenDetail struct {
 
 type AccessDetail struct {
 	UserID     int64
+	RoleID     int64
+	Email	   string
 	Authorized bool
 }
 
-func CreateToken(userid int64) (*TokenDetail, error) {
+func CreateToken(user *entity.User) (*TokenDetail, error) {
 	td := &TokenDetail{}
 	td.ExpiredToken = time.Now().Add(time.Minute * 15).Unix()
 	var err error
 	atClaims := jwt.MapClaims{}
 	atClaims["authorized"] = true
-	atClaims["user_id"] = userid
+	atClaims["user_id"] = user.ID
+	atClaims["role_id"] = user.RoleID
+	atClaims["email"] = user.Email
 	atClaims["exp"] = td.ExpiredToken
 
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)

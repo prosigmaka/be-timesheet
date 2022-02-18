@@ -152,7 +152,7 @@ func (h *userHandler) Login(c *gin.Context) {
 	}
 
 	// Generate JWT
-	token, err := jwttoken.CreateToken(int64(validateUser.ID))
+	token, err := jwttoken.CreateToken(validateUser)
 	if err != nil {
 		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
 		return
