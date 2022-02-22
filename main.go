@@ -9,6 +9,9 @@ import (
 	"be-timesheet/pkg/service"
 	"fmt"
 	"log"
+	// "time"
+	// "io"
+	// "os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -34,6 +37,7 @@ func main() {
 
 	// router := mux.NewRouter()
 	router := gin.Default()
+
 	timesheet := router.Group("/v1/timesheets")
 
 	timesheet.GET("/", middleware.AuthMiddleware(), timesheetHandler.GetAllTimesheets)
@@ -56,9 +60,40 @@ func main() {
 	user.DELETE("/:user_id", userHandler.DeleteUser)
 	user.POST("/login", userHandler.Login)
 
+
+
+
+
 	log.Println("API is running")
 	port := fmt.Sprintf(":%d", viper.GetInt("App.Port"))
 	router.Use(middleware.CORSMiddleware())
 	router.Run(port)
 
 }
+
+
+
+
+// router.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+
+	// 	// your custom format
+	// 	return fmt.Sprintf("%s - [%s] \"%s %s %s %d %s \"%s\" %s\"\n",
+	// 		param.ClientIP,
+	// 		param.TimeStamp.Format(time.RFC1123),
+	// 		param.Method,
+	// 		param.Path,
+	// 		param.Request.Proto,
+	// 		param.StatusCode,
+	// 		param.Latency,
+	// 		param.Request.UserAgent(),
+	// 		param.ErrorMessage,
+	// 	)
+	// }))
+
+
+// Disable Console Color, you don't need console color when writing the logs to file.
+// gin.DisableConsoleColor()
+
+// // Logging to a file.
+// f, _ := os.Create("gin.log")
+// gin.DefaultWriter = io.MultiWriter(f)

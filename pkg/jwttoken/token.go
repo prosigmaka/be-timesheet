@@ -20,7 +20,9 @@ type TokenDetail struct {
 type AccessDetail struct {
 	UserID     int64
 	RoleID     int64
-	Email	   string
+	Email      string
+	FirstName  string
+	LastName   string
 	Authorized bool
 }
 
@@ -32,6 +34,8 @@ func CreateToken(user *entity.User) (*TokenDetail, error) {
 	atClaims["authorized"] = true
 	atClaims["user_id"] = user.ID
 	atClaims["role_id"] = user.RoleID
+	atClaims["first_name"] = user.FirstName
+	atClaims["last_name"] = user.LastName
 	atClaims["email"] = user.Email
 	atClaims["exp"] = td.ExpiredToken
 

@@ -40,7 +40,7 @@ type TimesheetResponse struct {
 	StatusID      int    `json:"status_id"`
 }
 
-func (t *TimesheetResponse) Validate(action string) map[string]string {
+func (t *TimesheetRequest) Validate(action string) map[string]string {
 	var errorMessages = make(map[string]string)
 
 	switch strings.ToLower(action) {

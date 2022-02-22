@@ -14,7 +14,7 @@ type UserService interface {
 	GetAllUsers() (*[]entity.UserResponse, error)
 	GetUserByID(ID int) (*entity.UserResponse, error)
 	AddUser(registerRequest *entity.RegisterRequest) (*entity.UserResponse, error)
-	UpdateUser(userResponse *entity.User) (*entity.UserResponse, error)
+	UpdateUser(user *entity.User) (*entity.UserResponse, error)
 	DeleteUser(ID int) error
 	GetUserByEmailPassword(loginRequest entity.LoginRequest) (*entity.User, error)
 }
@@ -112,7 +112,7 @@ func (s *userService) AddUser(registerRequest *entity.RegisterRequest) (*entity.
 	return &afterRegister, nil
 }
 
-func (s *userService) UpdateUser(userResponse *entity.User) (*entity.UserResponse, error) {
+func (s *userService) UpdateUser(user *entity.User) (*entity.UserResponse, error) {
 	// user, err := s.userRepo.GetUserByID(ID)
 
 	// user.Email = userRequest.Email
@@ -123,13 +123,13 @@ func (s *userService) UpdateUser(userResponse *entity.User) (*entity.UserRespons
 
 	// updatedUser, err := s.userRepo.UpdateUser(user)
 	// return updatedUser, err
-	password, err := userResponse.EncryptPassword(userResponse.Password)
+	password, err := user.EncryptPassword(user.Password)
 	if err != nil {
 		return nil, err
 	}
-	userResponse.Password = password
+	user.Password = password
 
-	result, err := s.userRepo.UpdateUser(userResponse)
+	result, err := s.userRepo.UpdateUser(user)
 	if err != nil {
 		return nil, err
 	}

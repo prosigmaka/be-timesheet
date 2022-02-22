@@ -51,53 +51,41 @@ func (h *timesheetHandler) GetTimesheetByID(c *gin.Context) {
 
 }
 
-// func (h *timesheetHandler) AddTimesheet(c *gin.Context) {
-// 	// var timesheetInput entity.TimesheetRequest
-// 	date := c.DefaultPostForm("date", "date")
-// 	workingstart := c.DefaultPostForm("working_start", "working_start")
-// 	workingend := c.DefaultPostForm("working_end", "working_end")
-// 	overtimestart := c.DefaultPostForm("overtime_start", "overtime_start")
-// 	overtimeend := c.DefaultPostForm("overtime_end", "overtime_end")
-// 	activity := c.DefaultPostForm("activity", "activity")
-// 	projectid, _ := strconv.Atoi(c.DefaultPostForm("project_id", "project_id"))
-// 	statusid, _ := strconv.Atoi(c.DefaultPostForm("status_id", "status_id"))
-
-// 	tokenMetadata, err := jwttoken.ExtractTokenMetadata(c.Request)
-// 	if err != nil {
-// 		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	userId := tokenMetadata.UserID
-
-// 	var timesheetInput = entity.TimesheetResponse{
-// 		Date:          date,
-// 		UserID:        int(userId),
-// 		WorkingStart:  workingstart,
-// 		WorkingEnd:    workingend,
-// 		OvertimeStart: overtimestart,
-// 		OvertimeEnd:   overtimeend,
-// 		Activity:      activity,
-// 		ProjectID:     projectid,
-// 		StatusID:      statusid,
-// 	}
-
-// 	addTimesheetError := timesheetInput.Validate("")
-// 	if len(addTimesheetError) > 0 {
-// 		response.ResponseCustomError(c, addTimesheetError, http.StatusBadRequest)
-// 		return
-// 	}
-
-// 	result, err := h.timesheetService.AddTimesheet(&timesheetInput)
-// 	if err != nil {
-// 		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	response.ResponseCreated(c, result)
-// }
-
 func (h *timesheetHandler) AddTimesheet(c *gin.Context) {
+	var timesheetInput entity.TimesheetRequest
+
+	tokenMetadata, _ := jwttoken.ExtractTokenMetadata(c.Request)
+
+	err := c.ShouldBindJSON(&timesheetInput)
+	if err != nil {
+		response.ResponseCustomError(c, err, http.StatusBadRequest)
+		return
+	} else {
+		userId := tokenMetadata.UserID
+		timesheetInput.UserID = int(userId)
+	}
+
+	addTimesheetError := timesheetInput.Validate("")
+	if len(addTimesheetError) > 0 {
+		response.ResponseCustomError(c, addTimesheetError, http.StatusBadRequest)
+		return
+	}
+
+	timesheet, err := h.timesheetService.AddTimesheet(timesheetInput)
+
+	if err != nil {
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// c.JSON(http.StatusOK, gin.H{
+	// 	"data": timesheet,
+	// })
+	response.ResponseCreated(c, timesheet)
+
+}
+
+func (h *timesheetHandler) UpdateTimesheet(c *gin.Context) {
 	var timesheetInput entity.TimesheetRequest
 
 	tokenMetadata, _ := jwttoken.ExtractTokenMetadata(c.Request)
@@ -114,7 +102,16 @@ func (h *timesheetHandler) AddTimesheet(c *gin.Context) {
 		timesheetInput.UserID = int(userId)
 	}
 
-	timesheet, err := h.timesheetService.AddTimesheet(timesheetInput)
+	idStr := c.Param("id_timesheet")
+	id, _ := strconv.Atoi(idStr)
+
+	updateTimesheetError := timesheetInput.Validate("")
+	if len(updateTimesheetError) > 0 {
+		response.ResponseCustomError(c, updateTimesheetError, http.StatusBadRequest)
+		return
+	}
+
+	timesheet, err := h.timesheetService.UpdateTimesheet(id, timesheetInput)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -128,6 +125,37 @@ func (h *timesheetHandler) AddTimesheet(c *gin.Context) {
 	})
 
 }
+
+func (h *timesheetHandler) DeleteTimesheet(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		response.ResponseError(c, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = h.timesheetService.DeleteTimesheet(id)
+	if err != nil {
+		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response.ResponseOK(c, "Succesfully Deleted Timesheet")
+
+}
+
+// func convertToTimesheetResponse(timesheet entity.Timesheet) entity.TimesheetResponse {
+// 	return entity.TimesheetResponse{
+// 		ID:            timesheet.ID,
+// 		WorkingStart:  timesheet.WorkingStart,
+// 		WorkingEnd:    timesheet.WorkingEnd,
+// 		OvertimeStart: timesheet.OvertimeStart,
+// 		OvertimeEnd:   timesheet.OvertimeEnd,
+// 		Activity:      timesheet.Activity,
+// 		ProjectID:     timesheet.ProjectID,
+// 		StatusID:      timesheet.StatusID,
+// 	}
+// }
 
 // func (h *timesheetHandler) UpdateTimesheet(c *gin.Context) {
 // 	idStr := c.Param("id_timesheet")
@@ -186,68 +214,48 @@ func (h *timesheetHandler) AddTimesheet(c *gin.Context) {
 
 // }
 
-func (h *timesheetHandler) UpdateTimesheet(c *gin.Context) {
-	var timesheetInput entity.TimesheetRequest
+// func (h *timesheetHandler) AddTimesheet(c *gin.Context) {
+// 	// var timesheetInput entity.TimesheetRequest
+// 	date := c.DefaultPostForm("date", "date")
+// 	workingstart := c.DefaultPostForm("working_start", "working_start")
+// 	workingend := c.DefaultPostForm("working_end", "working_end")
+// 	overtimestart := c.DefaultPostForm("overtime_start", "overtime_start")
+// 	overtimeend := c.DefaultPostForm("overtime_end", "overtime_end")
+// 	activity := c.DefaultPostForm("activity", "activity")
+// 	projectid, _ := strconv.Atoi(c.DefaultPostForm("project_id", "project_id"))
+// 	statusid, _ := strconv.Atoi(c.DefaultPostForm("status_id", "status_id"))
 
-	tokenMetadata, _ := jwttoken.ExtractTokenMetadata(c.Request)
-
-	err := c.ShouldBindJSON(&timesheetInput)
-	if err != nil {
-
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
-		})
-		return
-	} else {
-		userId := tokenMetadata.UserID
-		timesheetInput.UserID = int(userId)
-	}
-
-	idStr := c.Param("id_timesheet")
-	id, _ := strconv.Atoi(idStr)
-
-	timesheet, err := h.timesheetService.UpdateTimesheet(id, timesheetInput)
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"data": timesheet,
-	})
-
-}
-
-func (h *timesheetHandler) DeleteTimesheet(c *gin.Context) {
-	idStr := c.Param("id")
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		response.ResponseError(c, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	err = h.timesheetService.DeleteTimesheet(id)
-	if err != nil {
-		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	response.ResponseOK(c, "Succesfully Deleted Timesheet")
-
-}
-
-// func convertToTimesheetResponse(timesheet entity.Timesheet) entity.TimesheetResponse {
-// 	return entity.TimesheetResponse{
-// 		ID:            timesheet.ID,
-// 		WorkingStart:  timesheet.WorkingStart,
-// 		WorkingEnd:    timesheet.WorkingEnd,
-// 		OvertimeStart: timesheet.OvertimeStart,
-// 		OvertimeEnd:   timesheet.OvertimeEnd,
-// 		Activity:      timesheet.Activity,
-// 		ProjectID:     timesheet.ProjectID,
-// 		StatusID:      timesheet.StatusID,
+// 	tokenMetadata, err := jwttoken.ExtractTokenMetadata(c.Request)
+// 	if err != nil {
+// 		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
+// 		return
 // 	}
+
+// 	userId := tokenMetadata.UserID
+
+// 	var timesheetInput = entity.TimesheetResponse{
+// 		Date:          date,
+// 		UserID:        int(userId),
+// 		WorkingStart:  workingstart,
+// 		WorkingEnd:    workingend,
+// 		OvertimeStart: overtimestart,
+// 		OvertimeEnd:   overtimeend,
+// 		Activity:      activity,
+// 		ProjectID:     projectid,
+// 		StatusID:      statusid,
+// 	}
+
+// 	addTimesheetError := timesheetInput.Validate("")
+// 	if len(addTimesheetError) > 0 {
+// 		response.ResponseCustomError(c, addTimesheetError, http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	result, err := h.timesheetService.AddTimesheet(&timesheetInput)
+// 	if err != nil {
+// 		response.ResponseError(c, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	response.ResponseCreated(c, result)
 // }

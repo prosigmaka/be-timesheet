@@ -55,6 +55,65 @@ func (s *service) GetAllTimesheet() ([]entity.TimesheetResponse, error) {
 
 }
 
+
+
+func (s *service) GetTimesheetByID(ID int) (entity.Timesheet, error) {
+	timesheet, err := s.repository.GetTimesheetByID(ID)
+	return timesheet, err
+}
+
+
+
+func (s *service) AddTimesheet(timesheetRequest entity.TimesheetRequest) (entity.Timesheet, error) {
+	timesheet := entity.Timesheet{
+		Date:          timesheetRequest.Date,
+		UserID:        timesheetRequest.UserID,
+		WorkingStart:  timesheetRequest.WorkingStart,
+		WorkingEnd:    timesheetRequest.WorkingEnd,
+		OvertimeStart: timesheetRequest.OvertimeStart,
+		OvertimeEnd:   timesheetRequest.OvertimeEnd,
+		Activity:      timesheetRequest.Activity,
+		ProjectID:     timesheetRequest.ProjectID,
+		StatusID:      timesheetRequest.StatusID,
+	}
+	newTimesheet, err := s.repository.AddTimesheet(timesheet)
+	return newTimesheet, err
+}
+
+
+
+func (s *service) UpdateTimesheet(ID int, timesheetRequest entity.TimesheetRequest) (entity.Timesheet, error) {
+	timesheet, err := s.repository.GetTimesheetByID(ID)
+
+	timesheet.Date = timesheetRequest.Date
+	timesheet.UserID = timesheetRequest.UserID
+	timesheet.WorkingStart = timesheetRequest.WorkingStart
+	timesheet.WorkingEnd = timesheetRequest.WorkingEnd
+	timesheet.OvertimeStart = timesheetRequest.OvertimeStart
+	timesheet.OvertimeEnd = timesheetRequest.OvertimeEnd
+	timesheet.Activity = timesheetRequest.Activity
+	timesheet.ProjectID = timesheetRequest.ProjectID
+	timesheet.StatusID = timesheetRequest.StatusID
+
+	updatedTimesheet, err := s.repository.UpdateTimesheet(timesheet)
+	return updatedTimesheet, err
+
+}
+
+func (s *service) DeleteTimesheet(ID int) error {
+	// timesheet, err := s.repository.GetTimesheetByID(ID)
+
+	// deleteTimesheet, err := s.repository.DeleteTimesheet(timesheet)
+	// return deleteTimesheet, err
+	err := s.repository.DeleteTimesheet(ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
 // func (s *service) GetTimesheetByID(ID int) (*entity.TimesheetResponse, error) {
 // 	// timesheet, err := s.repository.GetTimesheetByID(ID)
 // 	// return timesheet, err
@@ -84,10 +143,44 @@ func (s *service) GetAllTimesheet() ([]entity.TimesheetResponse, error) {
 // 	return &timesheet, nil
 // }
 
-func (s *service) GetTimesheetByID(ID int) (entity.Timesheet, error) {
-	timesheet, err := s.repository.GetTimesheetByID(ID)
-	return timesheet, err
-}
+
+// func (s *service) UpdateTimesheet(timesheetResponse *entity.TimesheetResponse) (*entity.TimesheetResponse, error) {
+// 	// timesheet, _ := s.repository.GetTimesheetByID(ID)
+
+// 	// timesheet.Date = timesheetRequest.Date
+// 	// timesheet.UserID = timesheetRequest.UserID
+// 	// timesheet.WorkingStart = timesheetRequest.WorkingStart
+// 	// timesheet.WorkingEnd = timesheetRequest.WorkingEnd
+// 	// timesheet.OvertimeStart = timesheetRequest.OvertimeStart
+// 	// timesheet.OvertimeEnd = timesheetRequest.OvertimeEnd
+// 	// timesheet.Activity = timesheetRequest.Activity
+// 	// timesheet.ProjectID = timesheetRequest.ProjectID
+// 	// timesheet.StatusID = timesheetRequest.StatusID
+
+// 	// updatedTimesheet, err := s.repository.UpdateTimesheet(&timesheet)
+// 	// return updatedTimesheet, err
+// 	var timesheet = entity.Timesheet{
+// 		ID:            timesheetResponse.ID,
+// 		Date:          timesheetResponse.Date,
+// 		UserID:        timesheetResponse.UserID,
+// 		WorkingStart:  timesheetResponse.WorkingStart,
+// 		WorkingEnd:    timesheetResponse.WorkingEnd,
+// 		OvertimeStart: timesheetResponse.OvertimeStart,
+// 		OvertimeEnd:   timesheetResponse.OvertimeEnd,
+// 		Activity:      timesheetResponse.Activity,
+// 		ProjectID:     timesheetResponse.ProjectID,
+// 		StatusID:      timesheetResponse.StatusID,
+// 	}
+
+// 	_, err := s.repository.UpdateTimesheet(&timesheet)
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	return timesheetResponse, nil
+// }
+
 
 // func (s *service) AddTimesheet(timesheet *entity.TimesheetResponse) (*entity.TimesheetResponse, error) {
 // 	var timesheetRes = entity.Timesheet{
@@ -145,87 +238,3 @@ func (s *service) GetTimesheetByID(ID int) (entity.Timesheet, error) {
 
 // 	// return foodVM, nil
 // }
-
-func (s *service) AddTimesheet(timesheetRequest entity.TimesheetRequest) (entity.Timesheet, error) {
-	timesheet := entity.Timesheet{
-		Date:          timesheetRequest.Date,
-		UserID:        timesheetRequest.UserID,
-		WorkingStart:  timesheetRequest.WorkingStart,
-		WorkingEnd:    timesheetRequest.WorkingEnd,
-		OvertimeStart: timesheetRequest.OvertimeStart,
-		OvertimeEnd:   timesheetRequest.OvertimeEnd,
-		Activity:      timesheetRequest.Activity,
-		ProjectID:     timesheetRequest.ProjectID,
-		StatusID:      timesheetRequest.StatusID,
-	}
-	newTimesheet, err := s.repository.AddTimesheet(timesheet)
-	return newTimesheet, err
-}
-
-// func (s *service) UpdateTimesheet(timesheetResponse *entity.TimesheetResponse) (*entity.TimesheetResponse, error) {
-// 	// timesheet, _ := s.repository.GetTimesheetByID(ID)
-
-// 	// timesheet.Date = timesheetRequest.Date
-// 	// timesheet.UserID = timesheetRequest.UserID
-// 	// timesheet.WorkingStart = timesheetRequest.WorkingStart
-// 	// timesheet.WorkingEnd = timesheetRequest.WorkingEnd
-// 	// timesheet.OvertimeStart = timesheetRequest.OvertimeStart
-// 	// timesheet.OvertimeEnd = timesheetRequest.OvertimeEnd
-// 	// timesheet.Activity = timesheetRequest.Activity
-// 	// timesheet.ProjectID = timesheetRequest.ProjectID
-// 	// timesheet.StatusID = timesheetRequest.StatusID
-
-// 	// updatedTimesheet, err := s.repository.UpdateTimesheet(&timesheet)
-// 	// return updatedTimesheet, err
-// 	var timesheet = entity.Timesheet{
-// 		ID:            timesheetResponse.ID,
-// 		Date:          timesheetResponse.Date,
-// 		UserID:        timesheetResponse.UserID,
-// 		WorkingStart:  timesheetResponse.WorkingStart,
-// 		WorkingEnd:    timesheetResponse.WorkingEnd,
-// 		OvertimeStart: timesheetResponse.OvertimeStart,
-// 		OvertimeEnd:   timesheetResponse.OvertimeEnd,
-// 		Activity:      timesheetResponse.Activity,
-// 		ProjectID:     timesheetResponse.ProjectID,
-// 		StatusID:      timesheetResponse.StatusID,
-// 	}
-
-// 	_, err := s.repository.UpdateTimesheet(&timesheet)
-
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return timesheetResponse, nil
-// }
-
-func (s *service) UpdateTimesheet(ID int, timesheetRequest entity.TimesheetRequest) (entity.Timesheet, error) {
-	timesheet, err := s.repository.GetTimesheetByID(ID)
-
-	timesheet.Date = timesheetRequest.Date
-	timesheet.UserID = timesheetRequest.UserID
-	timesheet.WorkingStart = timesheetRequest.WorkingStart
-	timesheet.WorkingEnd = timesheetRequest.WorkingEnd
-	timesheet.OvertimeStart = timesheetRequest.OvertimeStart
-	timesheet.OvertimeEnd = timesheetRequest.OvertimeEnd
-	timesheet.Activity = timesheetRequest.Activity
-	timesheet.ProjectID = timesheetRequest.ProjectID
-	timesheet.StatusID = timesheetRequest.StatusID
-
-	updatedTimesheet, err := s.repository.UpdateTimesheet(timesheet)
-	return updatedTimesheet, err
-
-}
-
-func (s *service) DeleteTimesheet(ID int) error {
-	// timesheet, err := s.repository.GetTimesheetByID(ID)
-
-	// deleteTimesheet, err := s.repository.DeleteTimesheet(timesheet)
-	// return deleteTimesheet, err
-	err := s.repository.DeleteTimesheet(ID)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
