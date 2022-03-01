@@ -40,7 +40,7 @@ func main() {
 	projectHandler := handler.NewProjectHandler(projectService)
 
 	router := gin.Default()
-	project := router.Group("/V1/projects")
+	project := router.Group("/v1/projects")
 
 	project.GET("/", projectHandler.GetAllProject)
 	project.GET("/:id_project", projectHandler.GetAllProjectByID)
