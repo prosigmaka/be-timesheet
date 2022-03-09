@@ -55,14 +55,10 @@ func (s *service) GetAllTimesheet() ([]entity.TimesheetResponse, error) {
 
 }
 
-
-
 func (s *service) GetTimesheetByID(ID int) (entity.Timesheet, error) {
 	timesheet, err := s.repository.GetTimesheetByID(ID)
 	return timesheet, err
 }
-
-
 
 func (s *service) AddTimesheet(timesheetRequest entity.TimesheetRequest) (entity.Timesheet, error) {
 	timesheet := entity.Timesheet{
@@ -80,10 +76,8 @@ func (s *service) AddTimesheet(timesheetRequest entity.TimesheetRequest) (entity
 	return newTimesheet, err
 }
 
-
-
 func (s *service) UpdateTimesheet(ID int, timesheetRequest entity.TimesheetRequest) (entity.Timesheet, error) {
-	timesheet, err := s.repository.GetTimesheetByID(ID)
+	timesheet, _ := s.repository.GetTimesheetByID(ID)
 
 	timesheet.Date = timesheetRequest.Date
 	timesheet.UserID = timesheetRequest.UserID
@@ -113,7 +107,6 @@ func (s *service) DeleteTimesheet(ID int) error {
 	return nil
 }
 
-
 // func (s *service) GetTimesheetByID(ID int) (*entity.TimesheetResponse, error) {
 // 	// timesheet, err := s.repository.GetTimesheetByID(ID)
 // 	// return timesheet, err
@@ -142,7 +135,6 @@ func (s *service) DeleteTimesheet(ID int) error {
 
 // 	return &timesheet, nil
 // }
-
 
 // func (s *service) UpdateTimesheet(timesheetResponse *entity.TimesheetResponse) (*entity.TimesheetResponse, error) {
 // 	// timesheet, _ := s.repository.GetTimesheetByID(ID)
@@ -180,7 +172,6 @@ func (s *service) DeleteTimesheet(ID int) error {
 
 // 	return timesheetResponse, nil
 // }
-
 
 // func (s *service) AddTimesheet(timesheet *entity.TimesheetResponse) (*entity.TimesheetResponse, error) {
 // 	var timesheetRes = entity.Timesheet{

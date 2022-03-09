@@ -9,5 +9,8 @@ Database:
   Password: "yagami2909"
   DBName: "timesheet-be"
 
-# Files:
-#   Path: "./files"
+Files:
+  Path: "./files"
+
+Jwt:
+  Secret: "q1w2e3r4t5y6"

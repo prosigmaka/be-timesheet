@@ -65,11 +65,11 @@ func (h *timesheetHandler) AddTimesheet(c *gin.Context) {
 		timesheetInput.UserID = int(userId)
 	}
 
-	addTimesheetError := timesheetInput.Validate("")
-	if len(addTimesheetError) > 0 {
-		response.ResponseCustomError(c, addTimesheetError, http.StatusBadRequest)
-		return
-	}
+	// addTimesheetError := timesheetInput.Validate("")
+	// if len(addTimesheetError) > 0 {
+	// 	response.ResponseCustomError(c, addTimesheetError, http.StatusBadRequest)
+	// 	return
+	// }
 
 	timesheet, err := h.timesheetService.AddTimesheet(timesheetInput)
 
@@ -105,11 +105,11 @@ func (h *timesheetHandler) UpdateTimesheet(c *gin.Context) {
 	idStr := c.Param("id_timesheet")
 	id, _ := strconv.Atoi(idStr)
 
-	updateTimesheetError := timesheetInput.Validate("")
-	if len(updateTimesheetError) > 0 {
-		response.ResponseCustomError(c, updateTimesheetError, http.StatusBadRequest)
-		return
-	}
+	// updateTimesheetError := timesheetInput.Validate("")
+	// if len(updateTimesheetError) > 0 {
+	// 	response.ResponseCustomError(c, updateTimesheetError, http.StatusBadRequest)
+	// 	return
+	// }
 
 	timesheet, err := h.timesheetService.UpdateTimesheet(id, timesheetInput)
 
