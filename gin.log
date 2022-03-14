@@ -1,0 +1,58 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /v1/timesheets/           --> be-timesheet/pkg/handler.(*timesheetHandler).GetAllTimesheets-fm (5 handlers)
+[GIN-debug] GET    /v1/timesheets/:id_timesheet --> be-timesheet/pkg/handler.(*timesheetHandler).GetTimesheetByID-fm (5 handlers)
+[GIN-debug] POST   /v1/timesheets/           --> be-timesheet/pkg/handler.(*timesheetHandler).AddTimesheet-fm (5 handlers)
+[GIN-debug] PUT    /v1/timesheets/:id_timesheet --> be-timesheet/pkg/handler.(*timesheetHandler).UpdateTimesheet-fm (5 handlers)
+[GIN-debug] DELETE /v1/timesheets/:id        --> be-timesheet/pkg/handler.(*timesheetHandler).DeleteTimesheet-fm (5 handlers)
+[GIN-debug] GET    /v1/status/               --> be-timesheet/pkg/handler.(*statusHandler).GetAllStatus-fm (4 handlers)
+[GIN-debug] GET    /v1/status/:id_status     --> be-timesheet/pkg/handler.(*statusHandler).GetStatusByID-fm (4 handlers)
+[GIN-debug] GET    /v1/addfile/              --> be-timesheet/pkg/handler.(*timesheetHandler).GetAllTimesheets-fm (5 handlers)
+[GIN-debug] GET    /v1/addfile/:id_file      --> be-timesheet/pkg/handler.(*timesheetHandler).GetTimesheetByID-fm (5 handlers)
+[GIN-debug] POST   /v1/addfile/              --> be-timesheet/pkg/handler.(*timesheetHandler).AddTimesheet-fm (5 handlers)
+[GIN-debug] PUT    /v1/addfile/:id_file      --> be-timesheet/pkg/handler.(*timesheetHandler).UpdateTimesheet-fm (5 handlers)
+[GIN-debug] DELETE /v1/addfile/:id           --> be-timesheet/pkg/handler.(*timesheetHandler).DeleteTimesheet-fm (5 handlers)
+[GIN-debug] GET    /v1/user/                 --> be-timesheet/pkg/handler.(*userHandler).GetAllUsers-fm (4 handlers)
+[GIN-debug] GET    /v1/user/:user_id         --> be-timesheet/pkg/handler.(*userHandler).GetUserByID-fm (5 handlers)
+[GIN-debug] POST   /v1/user/                 --> be-timesheet/pkg/handler.(*userHandler).RegisterUser-fm (4 handlers)
+[GIN-debug] PUT    /v1/user/:user_id         --> be-timesheet/pkg/handler.(*userHandler).UpdateUser-fm (4 handlers)
+[GIN-debug] DELETE /v1/user/:user_id         --> be-timesheet/pkg/handler.(*userHandler).DeleteUser-fm (4 handlers)
+[GIN-debug] POST   /v1/user/login            --> be-timesheet/pkg/handler.(*userHandler).Login-fm (4 handlers)
+[GIN-debug] GET    /v1/file/                 --> be-timesheet/pkg/handler.(*addFileHandler).GetAllFiles-fm (4 handlers)
+[GIN-debug] GET    /v1/file/:file_id         --> be-timesheet/pkg/handler.(*addFileHandler).GetFileByID-fm (5 handlers)
+[GIN-debug] POST   /v1/file/                 --> be-timesheet/pkg/handler.(*addFileHandler).AddNewFile-fm (5 handlers)
+[GIN-debug] PUT    /v1/file/:file_id         --> be-timesheet/pkg/handler.(*addFileHandler).UpdateFile-fm (5 handlers)
+[GIN-debug] DELETE /v1/file/:file_id         --> be-timesheet/pkg/handler.(*addFileHandler).DeleteFile-fm (5 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8081
+::1 - [Mon, 14 Mar 2022 10:22:10 +07] "OPTIONS /v1/user/login HTTP/1.1 204 253.4023ms "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:22:11 | 204 |    772.7704ms |             ::1 | OPTIONS  "/v1/user/login"
+::1 - [Mon, 14 Mar 2022 10:22:14 +07] "POST /v1/user/login HTTP/1.1 200 2.7149721s "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:22:14 | 200 |    2.7149721s |             ::1 | POST     "/v1/user/login"
+::1 - [Mon, 14 Mar 2022 10:22:16 +07] "OPTIONS /v1/timesheets HTTP/1.1 204 29.4702ms "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:22:16 | 204 |    104.8885ms |             ::1 | OPTIONS  "/v1/timesheets"
+[GIN-debug] redirecting request 301: /v1/timesheets/ --> /v1/timesheets/
+::1 - [Mon, 14 Mar 2022 10:22:17 +07] "OPTIONS /v1/timesheets/ HTTP/1.1 204 0s "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:22:17 | 204 |            0s |             ::1 | OPTIONS  "/v1/timesheets/"
+::1 - [Mon, 14 Mar 2022 10:22:19 +07] "GET /v1/timesheets/ HTTP/1.1 200 1.7538105s "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:22:19 | 200 |    1.7538105s |             ::1 | GET      "/v1/timesheets/"
+[GIN-debug] redirecting request 301: /v1/status/ --> /v1/status/
+::1 - [Mon, 14 Mar 2022 10:22:23 +07] "GET /v1/status/ HTTP/1.1 200 350.4082ms "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:22:23 | 200 |    350.4082ms |             ::1 | GET      "/v1/status/"
+::1 - [Mon, 14 Mar 2022 10:23:26 +07] "OPTIONS /v1/file HTTP/1.1 204 403.8026ms "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:23:26 | 204 |    403.8026ms |             ::1 | OPTIONS  "/v1/file"
+::1 - [Mon, 14 Mar 2022 10:23:26 +07] "OPTIONS /v1/file/ HTTP/1.1 204 0s "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:23:26 | 204 |      2.0011ms |             ::1 | OPTIONS  "/v1/file/"
+::1 - [Mon, 14 Mar 2022 10:23:27 +07] "GET /v1/file/ HTTP/1.1 200 695.5716ms "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:23:27 | 200 |    695.5716ms |             ::1 | GET      "/v1/file/"
+::1 - [Mon, 14 Mar 2022 10:23:45 +07] "OPTIONS /v1/file HTTP/1.1 204 0s "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:23:45 | 204 |            0s |             ::1 | OPTIONS  "/v1/file"
+::1 - [Mon, 14 Mar 2022 10:23:46 +07] "OPTIONS /v1/file/ HTTP/1.1 204 0s "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:23:46 | 204 |        97.6µs |             ::1 | OPTIONS  "/v1/file/"
+::1 - [Mon, 14 Mar 2022 10:23:46 +07] "GET /v1/file/ HTTP/1.1 200 32.5658ms "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" "
+[GIN] 2022/03/14 - 10:23:46 | 200 |     32.5658ms |             ::1 | GET      "/v1/file/"
