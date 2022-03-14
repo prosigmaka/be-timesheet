@@ -103,6 +103,7 @@ func main() {
 	file.POST("/", middleware.AuthMiddleware(), addFileHandler.AddNewFile)
 	file.PUT("/:file_id", middleware.AuthMiddleware(), addFileHandler.UpdateFile)
 	file.DELETE("/:file_id", middleware.AuthMiddleware(), addFileHandler.DeleteFile)
+	// file.GET("/:name", addFileHandler.DownloadFile)
 
 	// log.Println("API is running")
 

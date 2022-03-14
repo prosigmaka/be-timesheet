@@ -232,3 +232,17 @@ func (h *addFileHandler) DeleteFile(c *gin.Context) {
 	response.ResponseOK(c, "Succesfully Deleted Timesheet")
 
 }
+
+// func (h *addFileHandler) DownloadFile(c *gin.Context) {
+// 	var f entity.AdditionFileDownload
+// 	if err := c.ShouldBindUri(&f); err != nil {
+// 		response.ResponseError(c, err.Error(), http.StatusBadRequest)
+// 		return
+// 	}
+// 	m, cn, err := h.DownloadFile(f.Name)
+// 	if err != nil {
+// 		c.JSON(http.StatusNotFound, gin.H{"error": err})
+// 		return
+// 	}
+// 	c.Header("Content-Disposition", "attachment; filename"+f.Name)
+// }

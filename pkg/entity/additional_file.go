@@ -21,3 +21,7 @@ type AdditionFileResponse struct {
 	File      string `json:"file"`
 	UserID    int    `json:"user_id"`
 }
+
+type AdditionFileDownload struct {
+	Name string `uri:"name" binding:"required"`
+}

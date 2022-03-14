@@ -11,6 +11,7 @@ type FileService interface {
 	AddNewFile(file *entity.AdditionFileResponse) (*entity.AdditionFileResponse, error)
 	UpdateFile(fileResponse *entity.AdditionFileResponse) (*entity.AdditionFileResponse, error)
 	DeleteFile(ID int) error
+	// DownloadFile(FileName string) (string, []byte, error)
 }
 
 type fileService struct {
@@ -97,3 +98,16 @@ func (s *fileService) DeleteFile(ID int) error {
 
 	return nil
 }
+
+// var path = viper.GetString("Files.Path")
+
+// func (s *fileService) DownloadFile(fileName string) (string, []byte, error) {
+// 	dst := fmt.Sprintf("%s %s", path, fileName)
+// 	b, err := ioutil.ReadFile(dst)
+// 	if err != nil {
+// 		return "", nil, err
+// 	}
+// 	m := http.DetectContentType(b[:512])
+
+// 	return m, b, nil
+// }
